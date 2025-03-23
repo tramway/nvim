@@ -27,7 +27,7 @@ kset("n", "<Right>", ":vertical resize +15<CR>", opts({ desc = "Increase window 
 
 kset("n", "<Tab>", ":bnext<CR>", opts({ desc = "Next buffer" }))
 kset("n", "<S-Tab>", ":bprevious<CR>", opts({ desc = "Previous buffer" }))
-kset("n", "<leader>q", ":bdelete<CR>", opts({ desc = "Delete buffer" }))
+kset("n", "<leader>bd", ":bdelete<CR>", opts({ desc = "Delete buffer" }))
 kset("n", "<leader>bo", ":%bd|e#<CR>", opts({ desc = "Delete other buffers" }))
 
 kset("n", "<leader>wv", "<C-w>v", opts({ desc = "Split window vertically" }))
@@ -41,12 +41,12 @@ kset("n", "<C-l>", ":wincmd l<CR>", opts({ desc = "Go to split right" }))
 
 kset("v", "p", '"_dP', opts({ desc = "Keep last yanked when pasting" }))
 
-kset("n", "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", opts({ desc = "Move Down" }))
-kset("n", "<A-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", opts({ desc = "Move Up" }))
-kset("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", opts({ desc = "Move Down" }))
-kset("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", opts({ desc = "Move Up" }))
-kset("v", "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", opts({ desc = "Move Down" }))
-kset("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", opts({ desc = "Move Up" }))
+kset("n", "<A-j>", "<cmd>execute 'move .+' . v:count1<CR>==", opts({ desc = "Move Down" }))
+kset("n", "<A-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<CR>==", opts({ desc = "Move Up" }))
+kset("i", "<A-j>", "<esc><cmd>m .+1<CR>==gi", opts({ desc = "Move Down" }))
+kset("i", "<A-k>", "<esc><cmd>m .-2<CR>==gi", opts({ desc = "Move Up" }))
+kset("v", "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<CR>gv=gv", opts({ desc = "Move Down" }))
+kset("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<CR>gv=gv", opts({ desc = "Move Up" }))
 
 kset("n", "<leader>n", "<cmd>messages<CR>", opts({ desc = "Show messages" }))
 
@@ -59,19 +59,19 @@ kset("n", "-", "<CMD>Oil<CR>", opts({ desc = "Open parent directory" }))
 kset("n", "<leader>f", "<cmd>Telescope find_files<CR>", opts({ desc = "Find files" }))
 kset("n", "<leader><leader>", "<cmd>Telescope live_grep<CR>", opts({ desc = "Live grep" }))
 kset("n", "<leader>,", "<cmd>Telescope buffers<CR>", opts({ desc = "Buffers" }))
-kset("n", "<leader>gf", "<cmd>Telescope git_files<cr>", opts({ desc = "Find Files (git-files)" }))
+kset("n", "<leader>gf", "<cmd>Telescope git_files<CR>", opts({ desc = "Find Files (git-files)" }))
 kset("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", opts({ desc = "Git commits" }))
 kset("n", "<leader>sk", "<cmd>Telescope keymaps<CR>", opts({ desc = "Keymaps" }))
 kset("n", "<leader>sR", "<cmd>Telescope registers<CR>", opts({ desc = "Registers" }))
 kset("n", "<leader>sm", "<cmd>Telescope marks<CR>", opts({ desc = "Marks" }))
 kset("n", "<leader>ss", function() require("telescope.builtin").lsp_document_symbols() end,
   opts({ desc = "Goto Symbol" }))
-kset("n", "<leader>sr", "<cmd>Telescope resume<cr>", opts({ desc = "Resume previous search" }))
-kset("n", "<leader>sj", "<cmd>Telescope jumplist<cr>", opts({ desc = "Jumplist" }))
+kset("n", "<leader>sr", "<cmd>Telescope resume<CR>", opts({ desc = "Resume previous search" }))
+kset("n", "<leader>sj", "<cmd>Telescope jumplist<CR>", opts({ desc = "Jumplist" }))
 
 -- LSP
-kset("n", "gd", "<cmd>Telescope lsp_definitions<cr>", opts({ desc = "Definition" }))
-kset("n", "gr", "<cmd>Telescope lsp_references<cr>", opts({ desc = "References" }))
+kset("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts({ desc = "Definition" }))
+kset("n", "gr", "<cmd>Telescope lsp_references<CR>", opts({ desc = "References" }))
 kset("n", "gI", function() require("telescope.builtin").lsp_implementations({ reuse_win = true }) end,
   opts({ desc = "Implementation" }))
 kset("n", "gD", vim.lsp.buf.declaration, opts({ desc = "Declaration" }))
@@ -92,12 +92,26 @@ kset("n", "<leader>co",
 kset("n", "<leader>cd", vim.diagnostic.open_float, opts({ desc = "Show Diagnostics" }))
 
 -- GIT
-kset("n", "<leader>gg", "<cmd>LazyGit<cr>", opts({ desc = "LazyGit" }))
+kset("n", "<leader>gg", "<cmd>LazyGit<CR>", opts({ desc = "LazyGit" }))
+local gitsigns = require "gitsigns"
+kset("n", "<leader>ghs", gitsigns.stage_hunk, opts({ desc = "Stage hunk" }))
+kset("n", "<leader>ghr", gitsigns.reset_hunk, opts({ desc = "Reset hunk" }))
+kset("n", "<leader>ghp", gitsigns.preview_hunk, opts({ desc = "Preview hunk" }))
+kset("n", "<leader>ghi", gitsigns.preview_hunk_inline, opts({ desc = "Preview hunk inline" }))
+kset("n", "<leader>ghb", gitsigns.blame_line, opts({ desc = "Blame line" }))
+kset("n", "<leader>ght", gitsigns.toggle_current_line_blame, opts({ desc = "Toggle line blame" }))
+
+-- YAZI
+kset("n", "<leader>1", "<cmd>Yazi<CR>", opts({ desc = "Yazi - current file"}))
+kset("n", "<leader>2", "<cmd>Yazi cwd<CR>", opts({ desc = "Yazi - nvim working directory"}))
+kset("n", "<leader>3", "<cmd>Yazi toggle<CR>", opts({ desc = "Yazi - resume"}))
 
 local wk = require("which-key")
 wk.add({
+  { "<leader>1", group = "Yazi" },
   { "<leader>s", group = "Search" },
-  { "<leader>g", group = "Go to" },
+  { "<leader>g", group = "Git" },
+  { "<leader>gh", group = "Hunks" },
   { "<leader>w", group = "Window" },
   { "<leader>b", group = "Buffers" },
   { "<leader>c", group = "Code Action" },

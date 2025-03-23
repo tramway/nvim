@@ -46,7 +46,7 @@ Lazy.load({
   -- OIL
   "stevearc/oil.nvim",
   -- YAZI
-  {"mikavilpas/yazi.nvim", event = "VeryLazy"},
+  "mikavilpas/yazi.nvim",
   -- GIT
   "lewis6991/gitsigns.nvim",
   {
@@ -62,6 +62,7 @@ Lazy.load({
   },
   -- UI
   "folke/which-key.nvim",
+  "ggandor/leap.nvim",
   -- MISC
   "windwp/nvim-autopairs",
   -- THEME
@@ -76,9 +77,12 @@ require "plugins.lspconfig"
 require "plugins.telescope"
 require "plugins.which-key"
 require "plugins.treesitter"
-require "plugins.yazi"
 require "plugins.cmp"
-
+-- quick setup
 require "gitsigns".setup()
 require "nvim-autopairs".setup()
 require "oil".setup()
+require "leap".create_default_mappings()
+require "yazi".setup({
+  floating_window_scaling_factor = 1
+})
