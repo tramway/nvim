@@ -1,6 +1,8 @@
 local lspconfig = require 'lspconfig'
+local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 lspconfig.lua_ls.setup {
+  capabilities = lsp_capabilities,
   on_init = function(client)
     if client.workspace_folders then
       local path = client.workspace_folders[1].name
@@ -55,6 +57,7 @@ lspconfig.vtsls.setup {
 }
 
 lspconfig.angularls.setup {
+  capabilities = lsp_capabilities,
   filetypes = { "typescript", "html", "angular" },
   root_dir = function(fname)
     return require("lspconfig.util").root_pattern(
@@ -76,3 +79,30 @@ lspconfig.angularls.setup {
     }
   end,
 }
+
+local function filterDuplicates(array)
+    local uniqueArray = {}
+    for _, tableA in ipairs(array) do
+        local isDuplicate = false
+        for _, tableB in ipairs(uniqueArray) do
+            if vim.deep_equal(tableA, tableB) then
+                isDuplicate = true
+                break
+            end
+        end
+        if not isDuplicate then
+            table.insert(uniqueArray, tableA)
+        end
+    end
+    return uniqueArray
+end
+
+local function on_list(options)
+  vim.notify('ON LIST')
+    options.items = filterDuplicates(options.items)
+    vim.fn.setqflist({}, ' ', options)
+    vim.cmd('botright copen')
+end
+
+vim.lsp.buf.references(nil, { on_list = on_list })
+

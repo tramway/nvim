@@ -30,6 +30,8 @@ Lazy.load({
   "nvim-tree/nvim-web-devicons",
   -- LSP
   "neovim/nvim-lspconfig",
+  -- FORMATTERS
+  "stevearc/conform.nvim",
   -- TELESCOPE
   {"nvim-telescope/telescope.nvim", lazy = true},
   {"nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true },
@@ -79,6 +81,8 @@ require "plugins.telescope"
 require "plugins.which-key"
 require "plugins.treesitter"
 require "plugins.cmp"
+require "plugins.conform"
+
 -- quick setup
 require "gitsigns".setup()
 require "nvim-autopairs".setup()

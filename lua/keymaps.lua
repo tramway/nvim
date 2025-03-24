@@ -97,7 +97,7 @@ kset("n", "<leader>co",
   opts({ desc = "Organize Imports" })
 )
 kset("n", "<leader>cd", vim.diagnostic.open_float, opts({ desc = "Show Line Diagnostics" }))
-kset("n", "<leader>cD", utils_diagnostics.print_diagnostics, opts({ desc = "Show Buffer Diagnostics" }))
+kset("n", "<leader>cD", function() telescope.diagnostics({ bufnr = 0}) end, opts({ desc = "Show Buffer Diagnostics" }))
 
 -- GIT
 kset("n", "<leader>gg", "<cmd>LazyGit<CR>", opts({ desc = "LazyGit" }))
