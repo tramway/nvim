@@ -1,5 +1,10 @@
-local default_opts = { noremap = true, silent = true }
+local utils_diagnostics = require "plugins.diagnostics"
 
+local telescope = require "telescope.builtin"
+local wk = require("which-key")
+local gitsigns = require "gitsigns"
+
+local default_opts = { noremap = true, silent = true }
 local kset = vim.keymap.set
 
 local function opts(extends)
@@ -64,7 +69,7 @@ kset("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", opts({ desc = "Git com
 kset("n", "<leader>sk", "<cmd>Telescope keymaps<CR>", opts({ desc = "Keymaps" }))
 kset("n", "<leader>sR", "<cmd>Telescope registers<CR>", opts({ desc = "Registers" }))
 kset("n", "<leader>sm", "<cmd>Telescope marks<CR>", opts({ desc = "Marks" }))
-kset("n", "<leader>ss", function() require("telescope.builtin").lsp_document_symbols() end,
+kset("n", "<leader>ss", function() telescope.lsp_document_symbols() end,
   opts({ desc = "Goto Symbol" }))
 kset("n", "<leader>sr", "<cmd>Telescope resume<CR>", opts({ desc = "Resume previous search" }))
 kset("n", "<leader>sj", "<cmd>Telescope jumplist<CR>", opts({ desc = "Jumplist" }))
@@ -72,11 +77,13 @@ kset("n", "<leader>sj", "<cmd>Telescope jumplist<CR>", opts({ desc = "Jumplist" 
 -- LSP
 kset("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts({ desc = "Definition" }))
 kset("n", "gr", "<cmd>Telescope lsp_references<CR>", opts({ desc = "References" }))
-kset("n", "gI", function() require("telescope.builtin").lsp_implementations({ reuse_win = true }) end,
+kset("n", "gI", function() telescope.lsp_implementations({ reuse_win = true }) end,
   opts({ desc = "Implementation" }))
 kset("n", "gD", vim.lsp.buf.declaration, opts({ desc = "Declaration" }))
 kset("n", "K", function() return vim.lsp.buf.hover() end, opts({ desc = "Hover" }))
 kset("n", "gK", function() return vim.lsp.buf.signature_help() end, opts({ desc = "Signature help" }))
+
+-- Code action
 kset("n", "<leader>ca", vim.lsp.buf.code_action, opts({ desc = "Code Action" }))
 kset("n", "<leader>cr", vim.lsp.buf.rename, opts({ desc = "Rename" }))
 kset("n", "<leader>co",
@@ -89,11 +96,11 @@ kset("n", "<leader>co",
   end,
   opts({ desc = "Organize Imports" })
 )
-kset("n", "<leader>cd", vim.diagnostic.open_float, opts({ desc = "Show Diagnostics" }))
+kset("n", "<leader>cd", vim.diagnostic.open_float, opts({ desc = "Show Line Diagnostics" }))
+kset("n", "<leader>cD", utils_diagnostics.print_diagnostics, opts({ desc = "Show Buffer Diagnostics" }))
 
 -- GIT
 kset("n", "<leader>gg", "<cmd>LazyGit<CR>", opts({ desc = "LazyGit" }))
-local gitsigns = require "gitsigns"
 kset("n", "<leader>ghs", gitsigns.stage_hunk, opts({ desc = "Stage hunk" }))
 kset("n", "<leader>ghr", gitsigns.reset_hunk, opts({ desc = "Reset hunk" }))
 kset("n", "<leader>ghp", gitsigns.preview_hunk, opts({ desc = "Preview hunk" }))
@@ -106,7 +113,6 @@ kset("n", "<leader>1", "<cmd>Yazi<CR>", opts({ desc = "Yazi - current file"}))
 kset("n", "<leader>2", "<cmd>Yazi cwd<CR>", opts({ desc = "Yazi - nvim working directory"}))
 kset("n", "<leader>3", "<cmd>Yazi toggle<CR>", opts({ desc = "Yazi - resume"}))
 
-local wk = require("which-key")
 wk.add({
   { "<leader>1", group = "Yazi" },
   { "<leader>s", group = "Search" },

@@ -25,25 +25,41 @@ end
 
 ---@return string
 local function lsp_status()
-  local diagnostics = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
-  local warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
-  local hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
-  local infos = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
-  local function display(type, count, separator)
-    local sep = separator or " | "
-    return type .. ": " .. count .. sep
+  local all_diagnostics = vim.diagnostic.get(0)
+
+  if (not all_diagnostics or #all_diagnostics == 0) then
+    return " No issues found :) "
   end
-  local is_any_issues = diagnostics + warnings + hints + infos
-  if is_any_issues == 0 then
-    return ":)"
+
+  local issues = {
+    [vim.diagnostic.severity.ERROR] = 0,
+    [vim.diagnostic.severity.WARN] = 0,
+    [vim.diagnostic.severity.HINT] = 0,
+    [vim.diagnostic.severity.INFO] = 0
+  }
+  local translation = {
+    [vim.diagnostic.severity.ERROR] = "Errors",
+    [vim.diagnostic.severity.WARN] = "Warnings",
+    [vim.diagnostic.severity.HINT] = "Hints",
+    [vim.diagnostic.severity.INFO] = "Infos"
+  }
+
+  local status = { "" }
+
+  for _, diagnostic in ipairs(all_diagnostics) do
+    issues[diagnostic.severity] = issues[diagnostic.severity] + 1
   end
-  return display("E", diagnostics) .. display("W", warnings) .. display("H", hints) .. display("I", infos, " ")
+
+  for diag, count in ipairs(issues) do
+    table.insert(status, translation[diag] .. ": " .. count)
+  end
+
+  return table.concat(status, " ")
 end
 
 function _G.statusline()
   return table.concat({
     "%#Statusline#",
-    " ",
     lsp_status(),
     "%=",
     "%t",

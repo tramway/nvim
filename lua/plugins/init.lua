@@ -65,6 +65,7 @@ Lazy.load({
   "ggandor/leap.nvim",
   -- MISC
   "windwp/nvim-autopairs",
+  "folke/todo-comments.nvim",
   -- THEME
   {
     "rmehri01/onenord.nvim",
