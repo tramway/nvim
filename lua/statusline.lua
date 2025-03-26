@@ -15,11 +15,11 @@ local function lsp_attached()
     return "no lsp attached"
   end
   local names = vim.iter(attached_clients)
-  :map(function(client)
-    local name = client.name:gsub("language.server", "ls")
-    return name
-  end)
-  :totable()
+      :map(function(client)
+        local name = client.name:gsub("language.server", "ls")
+        return name
+      end)
+      :totable()
   return table.concat(names, ", ")
 end
 
@@ -28,7 +28,7 @@ local function lsp_status()
   local all_diagnostics = vim.diagnostic.get(0)
 
   if (not all_diagnostics or #all_diagnostics == 0) then
-    return " No issues found :) "
+    return " No issues found "
   end
 
   local issues = {
@@ -57,12 +57,23 @@ local function lsp_status()
   return table.concat(status, " ")
 end
 
+local function home_route()
+  local file_name = vim.fn.expand("%:t")
+  local work_dir = vim.fn.fnamemodify(vim.fn.getcwd(), ':t');
+  if file_name ~= "" then
+    return work_dir .. ' / .. / ' .. file_name
+  end
+
+  return work_dir
+end
+
+
 function _G.statusline()
   return table.concat({
     "%#Statusline#",
     lsp_status(),
     "%=",
-    "%t",
+    home_route(),
     "%h%w%m%r",
     "%=",
     lsp_attached(),

@@ -7,7 +7,7 @@ local opt = vim.opt
 
 opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
 opt.completeopt = "menu,menuone,noselect"
-opt.conceallevel = 2
+opt.conceallevel = 0
 opt.confirm = true
 opt.cursorline = true
 opt.expandtab = true

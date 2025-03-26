@@ -1,12 +1,17 @@
 local lspconfig = require 'lspconfig'
 local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+local util = require 'lspconfig.util'
+
+local client_capabilities = vim.lsp.protocol.make_client_capabilities()
+client_capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 
 lspconfig.lua_ls.setup {
   capabilities = lsp_capabilities,
   on_init = function(client)
     if client.workspace_folders then
       local path = client.workspace_folders[1].name
-      if path ~= vim.fn.stdpath('config') and (vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc')) then
+      if path ~= vim.fn.stdpath('config') and (vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc')) then
         return
       end
     end
@@ -56,16 +61,39 @@ lspconfig.vtsls.setup {
   },
 }
 
+lspconfig.intelephense.setup {}
+
+-- lspconfig.html.setup {}
+
+-- lspconfig.html.setup {
+--   capabilities = client_capabilities,
+--   cmd = { 'vscode-html-language-server', '--stdio' },
+--   filetypes = {
+--     "html",
+--     "templ",
+--     "blade",
+--     "hbs",
+--   },
+--   root_dir = util.root_pattern('package.json', '.git'),
+--   single_file_support = true,
+--   settings = {},
+--   init_options = {
+--     provideFormatter = true,
+--     embeddedLanguages = { css = true, javascript = true },
+--     configurationSection = { 'html', 'css', 'javascript' },
+--   },
+-- }
+
 lspconfig.angularls.setup {
   capabilities = lsp_capabilities,
   filetypes = { "typescript", "html", "angular" },
   root_dir = function(fname)
     return require("lspconfig.util").root_pattern(
-    "angular.json",
-    "workspace.json",
-    "nx.json",
-    "package.json",
-    "tsconfig.base.json"
+      "angular.json",
+      "workspace.json",
+      "nx.json",
+      "package.json",
+      "tsconfig.base.json"
     )(fname)
   end,
   on_new_config = function(new_config, new_root_dir)
@@ -81,28 +109,27 @@ lspconfig.angularls.setup {
 }
 
 local function filterDuplicates(array)
-    local uniqueArray = {}
-    for _, tableA in ipairs(array) do
-        local isDuplicate = false
-        for _, tableB in ipairs(uniqueArray) do
-            if vim.deep_equal(tableA, tableB) then
-                isDuplicate = true
-                break
-            end
-        end
-        if not isDuplicate then
-            table.insert(uniqueArray, tableA)
-        end
+  local uniqueArray = {}
+  for _, tableA in ipairs(array) do
+    local isDuplicate = false
+    for _, tableB in ipairs(uniqueArray) do
+      if vim.deep_equal(tableA, tableB) then
+        isDuplicate = true
+        break
+      end
     end
-    return uniqueArray
+    if not isDuplicate then
+      table.insert(uniqueArray, tableA)
+    end
+  end
+  return uniqueArray
 end
 
 local function on_list(options)
   vim.notify('ON LIST')
-    options.items = filterDuplicates(options.items)
-    vim.fn.setqflist({}, ' ', options)
-    vim.cmd('botright copen')
+  options.items = filterDuplicates(options.items)
+  vim.fn.setqflist({}, ' ', options)
+  vim.cmd('botright copen')
 end
 
 vim.lsp.buf.references(nil, { on_list = on_list })
-

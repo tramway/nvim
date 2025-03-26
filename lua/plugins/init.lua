@@ -33,12 +33,13 @@ Lazy.load({
   -- FORMATTERS
   "stevearc/conform.nvim",
   -- TELESCOPE
-  {"nvim-telescope/telescope.nvim", lazy = true},
-  {"nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true },
+  { "nvim-telescope/telescope.nvim",            lazy = true },
+  { "nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true },
   "nvim-telescope/telescope-ui-select.nvim",
   -- TREESITTER
   "nvim-treesitter/nvim-treesitter",
   "nvim-treesitter/nvim-treesitter-context",
+  "RRethy/vim-illuminate",
   -- AUTOCOMPLETE
   "hrsh7th/cmp-nvim-lsp",
   "hrsh7th/cmp-buffer",
@@ -91,3 +92,4 @@ require "leap".create_default_mappings()
 require "yazi".setup({
   floating_window_scaling_factor = 1
 })
+require "illuminate".configure()

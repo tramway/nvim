@@ -73,6 +73,7 @@ kset("n", "<leader>ss", function() telescope.lsp_document_symbols() end,
   opts({ desc = "Goto Symbol" }))
 kset("n", "<leader>sr", "<cmd>Telescope resume<CR>", opts({ desc = "Resume previous search" }))
 kset("n", "<leader>sj", "<cmd>Telescope jumplist<CR>", opts({ desc = "Jumplist" }))
+kset("n", "<leader>sfp", function() vim.notify(vim.fn.expand("%:p")) end, opts({ desc = "Show full file path" }))
 
 -- LSP
 kset("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts({ desc = "Definition" }))
@@ -97,7 +98,7 @@ kset("n", "<leader>co",
   opts({ desc = "Organize Imports" })
 )
 kset("n", "<leader>cd", vim.diagnostic.open_float, opts({ desc = "Show Line Diagnostics" }))
-kset("n", "<leader>cD", function() telescope.diagnostics({ bufnr = 0}) end, opts({ desc = "Show Buffer Diagnostics" }))
+kset("n", "<leader>cD", function() telescope.diagnostics({ bufnr = 0 }) end, opts({ desc = "Show Buffer Diagnostics" }))
 
 -- GIT
 kset("n", "<leader>gg", "<cmd>LazyGit<CR>", opts({ desc = "LazyGit" }))
@@ -109,16 +110,17 @@ kset("n", "<leader>ghb", gitsigns.blame_line, opts({ desc = "Blame line" }))
 kset("n", "<leader>ght", gitsigns.toggle_current_line_blame, opts({ desc = "Toggle line blame" }))
 
 -- YAZI
-kset("n", "<leader>1", "<cmd>Yazi<CR>", opts({ desc = "Yazi - current file"}))
-kset("n", "<leader>2", "<cmd>Yazi cwd<CR>", opts({ desc = "Yazi - nvim working directory"}))
-kset("n", "<leader>3", "<cmd>Yazi toggle<CR>", opts({ desc = "Yazi - resume"}))
+kset("n", "<leader>1", "<cmd>Yazi<CR>", opts({ desc = "Yazi - current file" }))
+kset("n", "<leader>2", "<cmd>Yazi cwd<CR>", opts({ desc = "Yazi - nvim working directory" }))
+kset("n", "<leader>3", "<cmd>Yazi toggle<CR>", opts({ desc = "Yazi - resume" }))
+
 
 wk.add({
-  { "<leader>1", group = "Yazi" },
-  { "<leader>s", group = "Search" },
-  { "<leader>g", group = "Git" },
+  { "<leader>1",  group = "Yazi" },
+  { "<leader>s",  group = "Search / Show" },
+  { "<leader>g",  group = "Git" },
   { "<leader>gh", group = "Hunks" },
-  { "<leader>w", group = "Window" },
-  { "<leader>b", group = "Buffers" },
-  { "<leader>c", group = "Code Action" },
+  { "<leader>w",  group = "Window" },
+  { "<leader>b",  group = "Buffers" },
+  { "<leader>c",  group = "Code Action" },
 })
