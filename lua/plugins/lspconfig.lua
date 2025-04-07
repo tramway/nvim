@@ -86,7 +86,7 @@ lspconfig.intelephense.setup {}
 
 lspconfig.angularls.setup {
   capabilities = lsp_capabilities,
-  filetypes = { "typescript", "html", "angular" },
+  filetypes = { "typescript", "html", "angular", "htmlangular" },
   root_dir = function(fname)
     return require("lspconfig.util").root_pattern(
       "angular.json",

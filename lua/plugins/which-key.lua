@@ -2,6 +2,7 @@ local wk = require 'which-key'
 
 wk.setup({
   preset = 'helix',
+  delay = 500,
   win = {
     padding = { 1, 3 },
     wo = {

@@ -55,7 +55,8 @@ kset("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<CR>gv=gv", 
 
 kset("n", "<leader>n", "<cmd>messages<CR>", opts({ desc = "Show messages" }))
 
-kset("n", "<leader>cf", function() vim.lsp.buf.format() end, opts({ desc = "Format file" }))
+-- QUIT
+kset("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
 
 -- OIL
 kset("n", "-", "<CMD>Oil<CR>", opts({ desc = "Open parent directory" }))
@@ -75,6 +76,8 @@ kset("n", "<leader>sr", "<cmd>Telescope resume<CR>", opts({ desc = "Resume previ
 kset("n", "<leader>sj", "<cmd>Telescope jumplist<CR>", opts({ desc = "Jumplist" }))
 kset("n", "<leader>sfp", function() vim.notify(vim.fn.expand("%:p")) end, opts({ desc = "Show full file path" }))
 
+kset("n", "<leader>uC", "<cmd>Telescope colorscheme<CR>", opts({ desc = "Colorscheme" }))
+
 -- LSP
 kset("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts({ desc = "Definition" }))
 kset("n", "gr", "<cmd>Telescope lsp_references<CR>", opts({ desc = "References" }))
@@ -84,7 +87,8 @@ kset("n", "gD", vim.lsp.buf.declaration, opts({ desc = "Declaration" }))
 kset("n", "K", function() return vim.lsp.buf.hover() end, opts({ desc = "Hover" }))
 kset("n", "gK", function() return vim.lsp.buf.signature_help() end, opts({ desc = "Signature help" }))
 
--- Code action
+-- Code action: normal
+kset("n", "<leader>cf", function() vim.lsp.buf.format() end, opts({ desc = "Format file" }))
 kset("n", "<leader>ca", vim.lsp.buf.code_action, opts({ desc = "Code Action" }))
 kset("n", "<leader>cr", vim.lsp.buf.rename, opts({ desc = "Rename" }))
 kset("n", "<leader>co",
@@ -99,6 +103,35 @@ kset("n", "<leader>co",
 )
 kset("n", "<leader>cd", vim.diagnostic.open_float, opts({ desc = "Show Line Diagnostics" }))
 kset("n", "<leader>cD", function() telescope.diagnostics({ bufnr = 0 }) end, opts({ desc = "Show Buffer Diagnostics" }))
+-- Code action: Visual
+-- todo check if this is correct way to call such function
+kset("x", "<leader>ref",
+  function()
+    vim.lsp.buf.code_action({
+      context = { only = { "refactor.extract.function" } },
+      apply = true,
+    })
+  end,
+  opts({ desc = "function" })
+)
+kset("x", "<leader>rec",
+  function()
+    vim.lsp.buf.code_action({
+      context = { only = { "refactor.extract.constant" } },
+      apply = true,
+    })
+  end,
+  opts({ desc = "constant" })
+)
+-- kset("x", "<leader>rec",
+--   function()
+--     vim.lsp.buf.code_action({
+--       context = { only = { "refactor.extract.constant" } },
+--       apply = true,
+--     })
+--   end,
+--   opts({ desc = "constant" })
+-- )
 
 -- GIT
 kset("n", "<leader>gg", "<cmd>LazyGit<CR>", opts({ desc = "LazyGit" }))
@@ -110,17 +143,23 @@ kset("n", "<leader>ghb", gitsigns.blame_line, opts({ desc = "Blame line" }))
 kset("n", "<leader>ght", gitsigns.toggle_current_line_blame, opts({ desc = "Toggle line blame" }))
 
 -- YAZI
-kset("n", "<leader>1", "<cmd>Yazi<CR>", opts({ desc = "Yazi - current file" }))
-kset("n", "<leader>2", "<cmd>Yazi cwd<CR>", opts({ desc = "Yazi - nvim working directory" }))
-kset("n", "<leader>3", "<cmd>Yazi toggle<CR>", opts({ desc = "Yazi - resume" }))
+kset("n", "<leader>yf", "<cmd>Yazi<CR>", opts({ desc = "Yazi - current file" }))
+kset("n", "<leader>yy", "<cmd>Yazi cwd<CR>", opts({ desc = "Yazi - nvim working directory" }))
+kset("n", "<leader>yr", "<cmd>Yazi toggle<CR>", opts({ desc = "Yazi - resume" }))
 
+wk.add(
+  {
+    { "<leader>y",  group = "Yazi" },
+    { "<leader>s",  group = "Search / Show" },
+    { "<leader>g",  group = "Git" },
+    { "<leader>gh", group = "Hunks" },
+    { "<leader>w",  group = "Window" },
+    { "<leader>b",  group = "Buffers" },
+    { "<leader>c",  group = "Code Action" },
+    { "<leader>u",  group = "UI" },
+    { "<leader>u",  group = "UI" },
 
-wk.add({
-  { "<leader>1",  group = "Yazi" },
-  { "<leader>s",  group = "Search / Show" },
-  { "<leader>g",  group = "Git" },
-  { "<leader>gh", group = "Hunks" },
-  { "<leader>w",  group = "Window" },
-  { "<leader>b",  group = "Buffers" },
-  { "<leader>c",  group = "Code Action" },
-})
+    { "<leader>r",  group = "Refactor",     mode = "x" },
+    { "<leader>re", group = "Extract",      mode = "x" },
+  }
+)

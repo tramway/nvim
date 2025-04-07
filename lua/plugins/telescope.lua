@@ -3,7 +3,7 @@ local actions = require('telescope.actions')
 require('telescope').setup {
   defaults = {
     sorting_strategy = "ascending",
-    layout_strategy = "horizontal",
+    -- layout_strategy = "horizontal",
     layout_config = {
       horizontal = {
         prompt_position = "top",
@@ -29,6 +29,9 @@ require('telescope').setup {
   },
   pickers = {
     ignore_current_buffer = true,
+    colorscheme = {
+      enable_preview = true
+    }
   },
   extensions = {
     fzf = {

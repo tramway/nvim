@@ -30,6 +30,17 @@ Lazy.load({
   "nvim-tree/nvim-web-devicons",
   -- LSP
   "neovim/nvim-lspconfig",
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    lazy = false,
+    config = function()
+      require("refactoring").setup()
+    end,
+  },
   -- FORMATTERS
   "stevearc/conform.nvim",
   -- TELESCOPE
@@ -71,9 +82,15 @@ Lazy.load({
   "folke/todo-comments.nvim",
   -- THEME
   {
-    "rmehri01/onenord.nvim",
+    "neanias/everforest-nvim",
     lazy = false,
     priority = 1000,
+    config = function()
+      require("everforest").setup({
+        background = "medium",
+        ui_contrast = "hard"
+      })
+    end,
   },
 })
 
@@ -93,3 +110,4 @@ require "yazi".setup({
   floating_window_scaling_factor = 1
 })
 require "illuminate".configure()
+require "refactoring".setup()
